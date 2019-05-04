@@ -1,7 +1,7 @@
 {
   "name": "easy-schema-validator",
   "description": "Easily validate JSON Schema.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": {
     "name": "Andrew Rothman",
     "url": "https://andrewrothman.com"
