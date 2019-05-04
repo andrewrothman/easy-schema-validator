@@ -1,0 +1,28 @@
+{
+  "name": "easy-validator",
+  "description": "Easily validate JSON Schema.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Andrew Rothman",
+    "url": "https://andrewrothman.com"
+  },
+  "main": "src/index.ts",
+  "license": "MIT",
+  "dependencies": {
+    "clone": "^2.1.2",
+    "isomorphic-fetch": "^2.2.1",
+    "typescript": "^3.4.5"
+  },
+  "scripts": {
+    "build:watch": "npx tsc --watch",
+    "test": "npx jest"
+  },
+  "devDependencies": {
+    "@types/ajv": "^1.0.0",
+    "@types/clone": "^0.1.30",
+    "@types/isomorphic-fetch": "^0.0.35",
+    "@types/jest": "^24.0.12",
+    "jest": "^24.7.1",
+    "ts-jest": "^24.0.2"
+  }
+}
