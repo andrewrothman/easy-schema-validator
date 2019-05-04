@@ -1,5 +1,5 @@
 {
-  "name": "easy-validator",
+  "name": "easy-schema-validator",
   "description": "Easily validate JSON Schema.",
   "version": "1.0.0",
   "author": {

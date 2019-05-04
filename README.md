@@ -1,4 +1,4 @@
-# easy-validator
+# easy-schema-validator
 
 Easily validate JSON Schema.
 
