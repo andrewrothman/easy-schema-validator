@@ -6,7 +6,10 @@
     "name": "Andrew Rothman",
     "url": "https://andrewrothman.com"
   },
-  "main": "src/index.ts",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:andrewrothman/easy-schema-validator.git"
+  },
   "keywords": [
     "easy",
     "simple",
@@ -22,14 +25,15 @@
     "validator"
   ],
   "license": "MIT",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "npx pack build",
+    "test": "npx jest"
+  },
   "dependencies": {
     "clone": "^2.1.2",
     "isomorphic-fetch": "^2.2.1",
     "typescript": "^3.4.5"
-  },
-  "scripts": {
-    "build": "npx pack build",
-    "test": "npx jest"
   },
   "devDependencies": {
     "@pika/pack": "^0.3.7",
