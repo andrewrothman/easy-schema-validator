@@ -8,8 +8,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:andrewrothman/easy-schema-validator.git"
+    "url": "https://github.com/andrewrothman/easy-schema-validator.git"
   },
+  "homepage": "https://github.com/andrewrothman/easy-schema-validator",
   "keywords": [
     "easy",
     "simple",
