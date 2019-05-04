@@ -14,15 +14,36 @@
     "typescript": "^3.4.5"
   },
   "scripts": {
-    "build:watch": "npx tsc --watch",
+    "build": "npx pack build",
     "test": "npx jest"
   },
   "devDependencies": {
+    "@pika/pack": "^0.3.7",
+    "@pika/plugin-build-node": "^0.3.16",
+    "@pika/plugin-build-types": "^0.3.16",
+    "@pika/plugin-build-web": "^0.3.16",
+    "@pika/plugin-standard-pkg": "^0.3.16",
     "@types/ajv": "^1.0.0",
     "@types/clone": "^0.1.30",
     "@types/isomorphic-fetch": "^0.0.35",
     "@types/jest": "^24.0.12",
     "jest": "^24.7.1",
     "ts-jest": "^24.0.2"
+  },
+  "@pika/pack": {
+    "pipeline": [
+      [
+        "@pika/plugin-standard-pkg"
+      ],
+      [
+        "@pika/plugin-build-node"
+      ],
+      [
+        "@pika/plugin-build-web"
+      ],
+      [
+        "@pika/plugin-build-types"
+      ]
+    ]
   }
 }
