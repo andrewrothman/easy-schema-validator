@@ -7,6 +7,20 @@
     "url": "https://andrewrothman.com"
   },
   "main": "src/index.ts",
+  "keywords": [
+    "easy",
+    "simple",
+    "json",
+    "schema",
+    "jsonschema",
+    "json schema",
+    "json-schema",
+    "json_schema",
+    "ajv",
+    "is-valid",
+    "validate",
+    "validator"
+  ],
   "license": "MIT",
   "dependencies": {
     "clone": "^2.1.2",
