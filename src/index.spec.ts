@@ -1,16 +1,15 @@
-import schemaValidator from "./index";
+import SchemaValidator from "./index";
 
 it("validates empty schema and data", async () => {
 	const schema: any = {};
 	const data: any = {};
 	
-	const validate = schemaValidator(schema);
-	const { defaults, valid } = await validate(data);
-	expect(defaults).toEqual({});
-	expect(valid).toBe(true);
+	const validator = new SchemaValidator(schema);
+	const { isValid, errors, value } = await validator.validate(data);
+	expect(isValid).toBe(true);
+	expect(errors).toHaveLength(0);
+	expect(value).toEqual({});
 });
-
-it.todo("throws with invalid schema");
 
 it("errors with invalid data", async () => {
 	const schema = {
@@ -23,10 +22,11 @@ it("errors with invalid data", async () => {
 		additional: "property",
 	};
 	
-	const validate = schemaValidator(schema);
-	const { defaults, valid } = await validate(data);
-	expect(defaults).toEqual(data);
-	expect(valid).toBe(false);
+	const validator = new SchemaValidator(schema);
+	const { isValid, errors, value } = await validator.validate(data);
+	expect(isValid).toBe(false);
+	expect(errors).toHaveLength(1);
+	expect(value).toEqual(undefined);
 });
 
 it("collects defaults", async () => {
@@ -54,13 +54,13 @@ it("collects defaults", async () => {
 		age: 32,
 	};
 	
-	const validate = schemaValidator(schema);
-	const { valid, defaults } = await validate(data);
-	
-	expect(defaults).toEqual({
+	const validator = new SchemaValidator(schema);
+	const { isValid, errors, value } = await validator.validate(data);
+	expect(isValid).toBe(true);
+	expect(errors).toHaveLength(0);
+	expect(value).toEqual({
 		name: "Sue",
 		age: 32,
 		pets: [],
 	});
-	expect(valid).toBe(true);
 });

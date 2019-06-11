@@ -1,18 +1,29 @@
 import Ajv from "ajv"
 import fetch from "isomorphic-fetch";
-import clone from "clone";
 
 type Schema = any;
 
 interface SchemaValidatorOptions {
-	defaults?: boolean;
+	useDefaults?: boolean;
 }
 
 type ValidatorFunction<T> = (data: unknown) => Promise<ValidationResult<T>>;
 
 interface ValidationResult<T> {
-	valid: boolean;
-	defaults: Partial<T>;
+	/**
+	 * Whether or not the data passed validation.
+	 */
+	isValid: boolean;
+	
+	/**
+	 * An array of validation errors.
+	 */
+	errors: Ajv.ErrorObject[];
+	
+	/**
+	 * The validated value is validation is passed, and undefined if failed.
+	 */
+	value: T | undefined;
 }
 
 async function defaultResolver(uri: string) {
@@ -21,43 +32,33 @@ async function defaultResolver(uri: string) {
 	return json;
 }
 
-function schemaValidator<T = any>(schema: Schema, options: SchemaValidatorOptions = {}): ValidatorFunction<T> {
-	const ajv = new Ajv({
-		useDefaults: options.defaults !== false,
-		loadSchema: defaultResolver,
-	});
+class SchemaValidator<T> {
+	private ajv: Ajv.Ajv;
+	private schema: { [key: string]: any };
+	private validateFunc: any;
 	
-	let validate: Ajv.ValidateFunction;
+	constructor(schema: any, private options: SchemaValidatorOptions = {}) {
+		this.schema = schema;
+		
+		this.ajv = new Ajv({
+			useDefaults: options.useDefaults !== false,
+			loadSchema: defaultResolver,
+		});
+	}
 	
-	return async (data: unknown) => {
-		if (validate === undefined) {
-			validate = await ajv.compileAsync(schema);
+	async validate(data: unknown): Promise<ValidationResult<T>> {
+		if (this.validateFunc === undefined) {
+			this.validateFunc = await this.ajv.compileAsync(this.schema);
 		}
 		
-		let newData: any = data;
-		
-		// clone the data if we want to collect defaults, as otherwise the previous data would be modified
-		if (options.defaults !== false) {
-			newData = clone(data);
-		}
-		
-		try {
-			const valid = await validate(newData);
+		const isValid = await this.validateFunc(data);
 			
-			return {
-				valid,
-				defaults: newData,
-			};
-		}
-		catch (e) {
-			// todo: needs to have reason that it failed... need to check if it was specifically a validation error or what... maybe it was a resolve error
-			
-			return {
-				valid: false,
-				defaults: newData,
-			};
-		}
-	};
+		return {
+			isValid,
+			errors: this.validateFunc.errors || [],
+			value: isValid ? data as T : undefined,
+		};
+	}
 }
 
-export default schemaValidator;
+export default SchemaValidator;
