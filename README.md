@@ -5,8 +5,8 @@ Easily validate JSON Schema.
 ## Features
 
 * Supports JSON Schema 04/06/07 via `ajv` package.
-* Allows for validation with minimal code and without dealing with thrown exceptions.
-* Optional collection of default values. (This option is `enabled` by default)
+* Allows for validation with minimal code.
+* Optional collection of default values. (This option is enabled by default)
 
 ## Examples
 
@@ -15,6 +15,8 @@ Easily validate JSON Schema.
 We can perform a simple validation like so:
 
 ```ts
+import SchemaValidator from "easy-schema-validator";
+
 const schema = {
     type: "object",
     additionalProperties: false,
@@ -34,8 +36,8 @@ const data = {
     age: 32,
 };
 
-const validate = schemaValidator(schema);
-const { valid } = await validate(data);
+const validator = new SchemaValidator(schema);
+const { isValid } = await validator.validate(data);
 ```
 
 ### Validation and Defaults Collection
@@ -43,6 +45,8 @@ const { valid } = await validate(data);
 We can also collect schema-defined default values for unspecified properties.
 
 ```ts
+import SchemaValidator from "easy-schema-validator";
+
 const schema = {
     type: "object",
     additionalProperties: false,
@@ -67,9 +71,9 @@ const data = {
     age: 32,
 };
 
-const validate = schemaValidator(schema);
-const { valid, defaults } = await validate(data);
+const validator = new SchemaValidator(schema);
+const { isValid, value } = await validator.validate(data);
 
-console.log(defaults.name); // => "Sue"
-console.log(defaults.pets); // => []
+console.log(value.name); // => "Sue"
+console.log(value.pets); // => []
 ```
