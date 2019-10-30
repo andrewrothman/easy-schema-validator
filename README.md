@@ -6,7 +6,7 @@ Easily validate JSON Schema.
 
 * Supports JSON Schema 04/06/07 via `ajv` package.
 * Allows for validation with minimal code.
-* Optional collection of default values. (This option is enabled by default)
+* Optional collection of default values. (This is enabled by default)
 
 ## Examples
 
@@ -36,8 +36,14 @@ const data = {
     age: 32,
 };
 
-const validator = new SchemaValidator(schema);
-const { isValid } = await validator.validate(data);
+const errors = await SchemaValidator.validate(schema, data);
+
+if (errors.length === 0) {
+    console.log("data matches schema");
+}
+else {
+    console.log("data does not match schema");
+}
 ```
 
 ### Validation and Defaults Collection
@@ -71,9 +77,50 @@ const data = {
     age: 32,
 };
 
-const validator = new SchemaValidator(schema);
-const { isValid, value } = await validator.validate(data);
+await SchemaValidator.validate(data, schema);
 
-console.log(value.name); // => "Sue"
-console.log(value.pets); // => []
+console.log(data.name); // => "Sue"
+console.log(data.pets); // => []
+```
+
+### As An Instance
+
+You can also construct instances of `SchemaValidator` if you'd prefer. This may increase performance when validating a large amount of data items using the same schema.
+
+```ts
+import SchemaValidator from "easy-schema-validator";
+
+const schema = {
+    type: "object",
+    additionalProperties: false,
+    required: ["name", "age", "pets"],
+    properties: {
+        name: {
+            type: "string"
+        },
+        age: {
+            type: "number",
+        },
+        pets: {
+           type: "array",
+           items: { type: "string" },
+           default: [],
+        },
+    },
+};
+
+const data = {
+    name: "Sue",
+    age: 32,
+};
+
+const validator = new SchemaValidator(schema);
+const errors = await validator.validate(data);
+
+if (errors.length === 0) {
+    console.log("data matches schema");
+}
+else {
+    console.log("data does not match schema");
+}
 ```
