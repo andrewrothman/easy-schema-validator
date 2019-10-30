@@ -26,43 +26,22 @@
     "validator"
   ],
   "license": "MIT",
-  "main": "src/index.ts",
+  "main": "./build/index.ts",
+  "type": "./build/index.d.ts",
   "scripts": {
-    "build": "npx pack build",
+    "build": "npx tsc",
     "test": "npx jest"
   },
   "dependencies": {
-    "ajv": "^6.10.0",
-    "isomorphic-fetch": "^2.2.1",
-    "typescript": "^3.4.5"
+    "ajv": "^6.10.2",
+    "cross-fetch": "^3.0.4",
+    "typescript": "^3.6.4"
   },
   "devDependencies": {
-    "@pika/pack": "^0.3.7",
-    "@pika/plugin-build-node": "^0.3.16",
-    "@pika/plugin-build-types": "^0.3.16",
-    "@pika/plugin-build-web": "^0.3.16",
-    "@pika/plugin-standard-pkg": "^0.3.16",
     "@types/ajv": "^1.0.0",
     "@types/clone": "^0.1.30",
-    "@types/isomorphic-fetch": "^0.0.35",
     "@types/jest": "^24.0.12",
     "jest": "^24.7.1",
     "ts-jest": "^24.0.2"
-  },
-  "@pika/pack": {
-    "pipeline": [
-      [
-        "@pika/plugin-standard-pkg"
-      ],
-      [
-        "@pika/plugin-build-node"
-      ],
-      [
-        "@pika/plugin-build-web"
-      ],
-      [
-        "@pika/plugin-build-types"
-      ]
-    ]
   }
 }
