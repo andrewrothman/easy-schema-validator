@@ -25,6 +25,11 @@
     "validate",
     "validator"
   ],
+  "files": [
+    "build/",
+    "README",
+    "LICENSE"
+  ],
   "license": "MIT",
   "main": "./build/index.ts",
   "type": "./build/index.d.ts",
