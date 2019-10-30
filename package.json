@@ -31,7 +31,7 @@
     "LICENSE"
   ],
   "license": "MIT",
-  "main": "./build/index.ts",
+  "main": "./build/index.js",
   "type": "./build/index.d.ts",
   "scripts": {
     "build": "npx tsc",
