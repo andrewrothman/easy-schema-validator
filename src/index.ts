@@ -1,29 +1,11 @@
 import Ajv from "ajv"
 import fetch from "cross-fetch";
 
-type Schema = any;
+export type Schema = object;
+export type SchemaValidationError = Ajv.ErrorObject;
 
 interface SchemaValidatorOptions {
 	useDefaults?: boolean;
-}
-
-type ValidatorFunction<T> = (data: unknown) => Promise<ValidationResult<T>>;
-
-interface ValidationResult<T> {
-	/**
-	 * Whether or not the data passed validation.
-	 */
-	isValid: boolean;
-	
-	/**
-	 * An array of validation errors.
-	 */
-	errors: Ajv.ErrorObject[];
-	
-	/**
-	 * The validated value is validation is passed, and undefined if failed.
-	 */
-	value: T | undefined;
 }
 
 async function defaultResolver(uri: string) {
@@ -32,12 +14,12 @@ async function defaultResolver(uri: string) {
 	return json;
 }
 
-class SchemaValidator<T> {
+class SchemaValidator {
 	private ajv: Ajv.Ajv;
-	private schema: { [key: string]: any };
+	private schema: Schema;
 	private validateFunc: any;
 	
-	constructor(schema: any, private options: SchemaValidatorOptions = {}) {
+	constructor(schema: Schema, options: SchemaValidatorOptions = {}) {
 		this.schema = schema;
 		
 		this.ajv = new Ajv({
@@ -46,18 +28,18 @@ class SchemaValidator<T> {
 		});
 	}
 	
-	async validate(data: unknown): Promise<ValidationResult<T>> {
+	async validate(data: unknown): Promise<SchemaValidationError[]> {
 		if (this.validateFunc === undefined) {
 			this.validateFunc = await this.ajv.compileAsync(this.schema);
 		}
 		
-		const isValid = await this.validateFunc(data);
-			
-		return {
-			isValid,
-			errors: this.validateFunc.errors || [],
-			value: isValid ? data as T : undefined,
-		};
+		await this.validateFunc(data);
+		return this.validateFunc.errors || [];
+	}
+	
+	static async validate(data: unknown, schema: Schema, options: SchemaValidatorOptions = {}): Promise<SchemaValidationError[]> {
+		const validator = new SchemaValidator(schema, options);
+		return validator.validate(data);
 	}
 }
 

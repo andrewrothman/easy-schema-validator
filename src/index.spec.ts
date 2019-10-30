@@ -5,10 +5,8 @@ it("validates empty schema and data", async () => {
 	const data: any = {};
 	
 	const validator = new SchemaValidator(schema);
-	const { isValid, errors, value } = await validator.validate(data);
-	expect(isValid).toBe(true);
+	const errors = await validator.validate(data);
 	expect(errors).toHaveLength(0);
-	expect(value).toEqual({});
 });
 
 it("errors with invalid data", async () => {
@@ -23,10 +21,8 @@ it("errors with invalid data", async () => {
 	};
 	
 	const validator = new SchemaValidator(schema);
-	const { isValid, errors, value } = await validator.validate(data);
-	expect(isValid).toBe(false);
+	const errors = await validator.validate(data);
 	expect(errors).toHaveLength(1);
-	expect(value).toEqual(undefined);
 });
 
 it("collects defaults", async () => {
@@ -55,10 +51,9 @@ it("collects defaults", async () => {
 	};
 	
 	const validator = new SchemaValidator(schema);
-	const { isValid, errors, value } = await validator.validate(data);
-	expect(isValid).toBe(true);
+	const errors = await validator.validate(data);
 	expect(errors).toHaveLength(0);
-	expect(value).toEqual({
+	expect(data).toEqual({
 		name: "Sue",
 		age: 32,
 		pets: [],
